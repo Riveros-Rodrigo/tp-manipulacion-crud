@@ -65,7 +65,6 @@ const moviesController = {
             return res.render('moviesAdd',{
                 errors: errors.mapped(),
                 old: req.body,
-                title:'Agregar una pelicula'
             })
         }
     },
