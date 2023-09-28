@@ -1,6 +1,7 @@
 const db = require('../database/models');
 const sequelize = db.sequelize;
 const moment = require('moment')
+const {validationResult} = require('express-validator');
 
 //Otra forma de llamar a los modelos
 const Movies = db.Movie;
@@ -46,18 +47,27 @@ const moviesController = {
         res.render('moviesAdd')
     },
     create: function (req, res) {
+        const errors = validationResult(req)
         const {title, rating, awards, release_date,length} = req.body //viene del form
-        db.Movie.create({
-            title: title.trim(),
-            rating,
-            awards,
-            release_date,
-            length
-        })
-            .then(movie =>{
-                console.log(movie);
-                return res.redirect('/movies')
-            }).catch(error => console.log(error))
+        if(errors.isEmpty()){
+            db.Movie.create({
+                title: title.trim(),
+                rating,
+                awards,
+                release_date,
+                length
+            })
+                .then(movie =>{
+                    console.log(movie);
+                    return res.redirect('/movies')
+                }).catch(error => console.log(error))
+        } else{
+            return res.render('moviesAdd',{
+                errors: errors.mapped(),
+                old: req.body,
+                title:'Agregar una pelicula'
+            })
+        }
     },
     edit: function(req, res) {
         db.Movie.findByPk(req.params.id) //siempre va esto porque necesito un id
@@ -83,13 +93,9 @@ const moviesController = {
                     id: req.params.id
                 }
             }
-        ).then(movie =>{ //el then dsp de usar el update te devuelve un array con el valor de 1 si hubo cambio o 0 si no hubo cambio
-            db.Movie.findByPk(req.params.id)
-                .then(movie =>{ //mando la peli que consegui (movie)
-                    return res.render('moviesDetail',{
-                        movie //mando la peli que consegui (movie)
-                    })
-                })
+        ).then(response =>{ //el then dsp de usar el update te devuelve un array con el valor de 1 si hubo cambio o 0 si no hubo cambio
+            console.log(response);
+            return res.redirect('/movies/detail/' + req.params.id)
         }).catch(error => console.log(error))
     },
     delete: function (req, res) {

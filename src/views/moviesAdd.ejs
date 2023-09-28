@@ -17,15 +17,22 @@
     <section class="formulario">
         <form action="/movies/create" method="POST">
             <label for="title">Title </label>
-            <p><input type="text" name="title" id=""></p>
-            <label for="rating">Rating </label>
-            <p><input type="number" name="rating" id=""> </p>
+            <p><input type="text" name="title" id="" value="<%= locals.old && (old.title && old.title) %>"></p>
+            <small class="ms-2 text-danger"><%= locals.errors && (errors.title && errors.title.msg) %></small> <br>
+            <label for="rating">Rating</label>
+            <p><input type="number" name="rating" id="" value="<%= locals.old && (old.rating && old.rating) %>"> </p>
+            <small class="ms-2 text-danger"><%= locals.errors && (errors.rating && errors.rating.msg) %></small>
+            <br>
             <label for="awards">Awards </label>
-            <p><input type="number" name="awards" id=""></p>
+            <p><input type="number" name="awards" id="" value="<%= locals.old && (old.awards && old.awards) %>"></p>
             <label for="release_date">Release date </label>
-            <p><input type="date" name="release_date" id=""></p>
+            <p><input type="date" name="release_date" id="" value="<%= locals.old && (old.release_date && old.release_date) %>"></p>
+            <small class="ms-2 text-danger"><%= locals.errors && (errors.release_date && errors.release_date.msg) %></small>
+            <br>
             <label for="length">Length </label>
-            <p><input type="number" name="length" id=""></p>
+            <p><input type="number" name="length" id="" value="<%= locals.old && (old.length && old.length) %>"></p>
+            <small class="ms-2 text-danger"><%= locals.errors && (errors.length && errors.length.msg) %></small>
+            <br>
 
             <br>
             <p> <button class="botonAgregar" type="submit">Agregar</button>
